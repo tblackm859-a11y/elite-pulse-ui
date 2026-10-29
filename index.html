@@ -13,12 +13,10 @@
             margin: 0;
             padding: 12px;
         }
-
         .container {
             max-width: 420px;
             margin: 0 auto;
         }
-
         .banner {
             background-color: #102a28;
             border: 1px solid #2ec4b6;
@@ -26,31 +24,6 @@
             border-radius: 8px;
             margin-bottom: 12px;
         }
-
-        .banner-title {
-            font-size: 0.65rem;
-            color: #8d99ae;
-            text-transform: uppercase;
-        }
-
-        .banner-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 4px;
-        }
-
-        .status-text {
-            font-weight: bold;
-            color: #2ec4b6;
-            font-size: 1rem;
-        }
-
-        .broker-text {
-            font-size: 0.75rem;
-            color: #8d99ae;
-        }
-
         .card {
             background-color: #141b2d;
             border: 1px solid #222b45;
@@ -58,7 +31,6 @@
             padding: 14px;
             margin-bottom: 12px;
         }
-
         .card-title {
             font-size: 0.75rem;
             font-weight: bold;
@@ -66,20 +38,16 @@
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
         }
-
         .form-group {
             margin-bottom: 10px;
         }
-
         label {
             display: block;
             font-size: 0.65rem;
             color: #8d99ae;
             margin-bottom: 3px;
         }
-
         input {
             width: 100%;
             padding: 8px 10px;
@@ -88,30 +56,26 @@
             color: #f8f9fa;
             border-radius: 6px;
             font-size: 0.85rem;
+            box-sizing: border-box;
         }
-
         .chart-box {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 6px;
             padding: 8px;
             margin-bottom: 10px;
         }
-
         svg {
             width: 100%;
             height: 60px;
         }
-
         @keyframes pulse {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-3px); }
             100% { transform: translateY(0px); }
         }
-
         .wave {
             animation: pulse 2s ease-in-out infinite;
         }
-
         .analysis-item {
             display: flex;
             justify-content: space-between;
@@ -121,7 +85,6 @@
             padding: 6px 0;
             border-bottom: 1px solid rgba(255,255,255,0.03);
         }
-
         .dot {
             height: 6px;
             width: 6px;
@@ -129,14 +92,12 @@
             border-radius: 50%;
             box-shadow: 0 0 6px #2ec4b6;
         }
-
         .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-top: 10px;
         }
-
         button {
             padding: 10px;
             border: none;
@@ -146,9 +107,121 @@
             cursor: pointer;
             text-transform: uppercase;
         }
-
         .btn-start { background-color: #2ec4b6; color: #0b0f19; }
         .btn-stop { background-color: #e71d36; color: #fff; }
+        .badge {
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        .stopped { background: rgba(231, 29, 54, 0.2); color: #e71d36; }
+        .running { background: rgba(46, 196, 182, 0.2); color: #2ec4b6; }
+    </style>
+</head>
+<body>
 
-        .badge
-        
+<div class="container">
+    <div class="banner">
+        <div style="font-size: 0.65rem; color: #8d99ae; text-transform: uppercase;">Account Status</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-weight: bold; color: #2ec4b6; font-size: 1rem;">CONNECTED</span>
+            <span style="font-size: 0.75rem; color: #8d99ae;" id="brokerLabel">Connected to Exness</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <span>🎛️ MT5 ACCOUNT</span>
+            <span style="color: #2ec4b6; cursor: pointer; font-size: 0.65rem;" onclick="saveCreds()">Save</span>
+        </div>
+        <div class="form-group">
+            <label>Broker</label>
+            <input type="text" id="brokerInput" value="Exness">
+        </div>
+        <div class="form-group">
+            <label>Login ID</label>
+            <input type="text" id="loginInput" value="56197382">
+        </div>
+        <div class="form-group">
+            <label>Server</label>
+            <input type="text" id="serverInput" value="Exness-Real23">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">📊 LIVE ANALYSIS</div>
+        <div class="chart-box">
+            <svg viewBox="0 0 300 60" preserveAspectRatio="none">
+                <path class="wave" d="M 0,40 Q 50,10 100,30 T 200,15 T 300,25" fill="none" stroke="#ffb703" stroke-width="2.5"></path>
+                <path d="M 0,40 Q 50,10 100,30 T 200,15 T 300,25 L 300,60 L 0,60 Z" fill="rgba(255, 183, 3, 0.1)"></path>
+            </svg>
+        </div>
+        <div class="analysis-item"><span>Detecting market structure</span><span class="dot"></span></div>
+        <div class="analysis-item"><span>Calibrating stop loss</span><span class="dot"></span></div>
+        <div class="analysis-item" style="border:none;"><span>AI scoring</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <span>🤖 BOT CONTROL</span>
+            <span id="statusBadge" class="badge stopped">STOPPED</span>
+        </div>
+        <div style="font-size: 0.7rem; color: #8d99ae; margin-bottom: 10px;">Elite Bot is monitoring your live account</div>
+        <div class="btn-grid">
+            <button class="btn-start" onclick="startBot()">START BOT</button>
+            <button class="btn-stop" onclick="stopBot()">STOP BOT</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const BACKEND_URL = "https://mt5-bot-2.onrender.com";
+
+    function saveCreds() {
+        const broker = document.getElementById('brokerInput').value;
+        document.getElementById('brokerLabel').innerText = `Connected to ${broker}`;
+        alert("Settings saved!");
+    }
+
+    async function startBot() {
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/bot/start`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    broker: document.getElementById('brokerInput').value,
+                    login: document.getElementById('loginInput').value,
+                    server: document.getElementById('serverInput').value
+                })
+            });
+            const data = await res.json();
+            if(data.success) {
+                const badge = document.getElementById('statusBadge');
+                badge.className = "badge running";
+                badge.innerText = "RUNNING";
+            }
+        } catch(e) {
+            alert("Backend connection error.");
+        }
+    }
+
+    async function stopBot() {
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/bot/stop`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            if(data.success) {
+                const badge = document.getElementById('statusBadge');
+                badge.className = "badge stopped";
+                badge.innerText = "STOPPED";
+            }
+        } catch(e) {
+            alert("Backend connection error.");
+        }
+    }
+</script>
+</body>
+</html>
