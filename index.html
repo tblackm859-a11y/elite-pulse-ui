@@ -4,17 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Pulse - MT5 Control Dashboard</title>
+    <title>MT5 Control Dashboard</title>
     <style>
         :root {
             --bg-color: #0b0f19;
-            --card-bg: #131b2e;
+            --card-bg: #141b2d;
             --accent-gold: #ffb703;
             --accent-green: #2ec4b6;
             --accent-red: #e71d36;
             --text-main: #f8f9fa;
             --text-muted: #8d99ae;
-            --border-color: #1f293d;
+            --border-color: #222b45;
         }
 
         * {
@@ -28,48 +28,52 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             padding: 12px;
-            max-width: 480px;
+            max-width: 440px;
             margin: 0 auto;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        h1 {
-            font-size: 1.2rem;
-            color: var(--accent-gold);
-        }
-
-        .connection-banner {
-            background: rgba(46, 196, 182, 0.08);
+        /* Top Bar matching video */
+        .top-connection-banner {
+            background-color: #102a28;
             border: 1px solid var(--accent-green);
             padding: 10px 14px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-bottom: 12px;
+        }
+
+        .top-connection-title {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .top-connection-main {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 2px;
         }
 
-        .connection-status {
-            font-weight: bold;
+        .top-connection-status {
+            font-weight: 800;
             color: var(--accent-green);
-            font-size: 0.85rem;
-            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
         }
 
+        .top-connection-broker {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Card Layout */
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
         }
 
         .card-header {
@@ -77,227 +81,150 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-size: 0.75rem;
+            font-weight: 700;
             color: var(--accent-gold);
             letter-spacing: 0.5px;
         }
 
-        .chart-container {
-            position: relative;
-            height: 90px;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-            padding: 5px;
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--accent-red);
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        .wave-svg {
-            width: 100%;
-            height: 70px;
-        }
-
-        /* Animation making the chart line pulse/wave dynamically */
-        @keyframes pulseWave {
-            0% { transform: translateY(0px) scaleY(1); }
-            50% { transform: translateY(-3px) scaleY(1.08); }
-            100% { transform: translateY(0px) scaleY(1); }
-        }
-
-        .animated-wave {
-            animation: pulseWave 1.8s ease-in-out infinite;
-            transform-origin: bottom;
-        }
-
+        /* Form Inputs matching video style */
         .form-group {
             margin-bottom: 8px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             margin-bottom: 2px;
         }
 
-        input {
+        .form-control {
             width: 100%;
             padding: 7px 10px;
-            background: var(--bg-color);
+            background: #090d16;
             border: 1px solid var(--border-color);
             color: var(--text-main);
             border-radius: 6px;
             font-size: 0.8rem;
         }
 
-        .analysis-item {
+        /* Live Analysis Chart */
+        .chart-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 10px;
+            height: 80px;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .wave-svg {
+            width: 100%;
+            height: 60px;
+        }
+
+        @keyframes wavePulse {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animated-path {
+            animation: wavePulse 2s ease-in-out infinite;
+        }
+
+        .analysis-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.75rem;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.7rem;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
             color: var(--text-muted);
         }
 
-        @keyframes blinkDot {
-            0% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px var(--accent-green); }
-            100% { opacity: 0.3; transform: scale(0.8); }
+        @keyframes dotBlink {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; box-shadow: 0 0 8px var(--accent-green); }
+            100% { opacity: 0.3; }
         }
 
-        .dot {
-            height: 7px;
-            width: 7px;
+        .status-dot {
+            height: 6px;
+            width: 6px;
             background-color: var(--accent-green);
             border-radius: 50%;
             display: inline-block;
-            animation: blinkDot 1.2s ease-in-out infinite;
+            animation: dotBlink 1.5s infinite;
         }
 
-        .btn-container {
+        .bot-footer-text {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            margin-bottom: 10px;
+        }
+
+        /* Buttons Panel */
+        .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
         }
 
-        .btn {
-            padding: 10px;
+        .action-btn {
+            padding: 9px;
             border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 0.8rem;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.75rem;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .btn-start { background-color: var(--accent-green); color: #0b0f19; }
-        .btn-stop { background-color: var(--accent-red); color: #fff; }
+        .btn-start {
+            background-color: var(--accent-green);
+            color: #0b0f19;
+        }
 
-        .status-badge {
-            font-size: 0.65rem;
-            padding: 3px 8px;
-            border-radius: 12px;
+        .btn-stop {
+            background-color: var(--accent-red);
+            color: #fff;
+        }
+
+        .badge {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 10px;
             font-weight: bold;
         }
-        .stopped { background: rgba(231, 29, 54, 0.2); color: var(--accent-red); }
-        .running { background: rgba(46, 196, 182, 0.2); color: var(--accent-green); }
+
+        .badge-stopped { background: rgba(231, 29, 54, 0.2); color: var(--accent-red); }
+        .badge-running { background: rgba(46, 196, 182, 0.2); color: var(--accent-green); }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>⚡ Elite Pulse</h1>
-        <span id="topBadge" class="status-badge stopped">STOPPED</span>
-    </header>
-
-    <div class="connection-banner">
-        <div>
-            <div style="font-size: 0.65rem; color: var(--text-muted);">Account Status</div>
-            <div class="connection-status">CONNECTED</div>
-        </div>
-        <div style="font-size: 0.75rem; color: var(--text-muted);" id="brokerDisplay">Connected to Exness</div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <span>🎛️ MT5 ACCOUNT</span>
-            <span style="font-size: 0.65rem; color: var(--accent-green); cursor: pointer;" onclick="saveCreds()">Save</span>
-        </div>
-        <div class="form-group">
-            <label>Broker</label>
-            <input type="text" id="brokerInput" value="Exness">
-        </div>
-        <div class="form-group">
-            <label>Login</label>
-            <input type="text" id="loginInput" value="56197382">
-        </div>
-        <div class="form-group">
-            <label>Server</label>
-            <input type="text" id="serverInput" value="Exness-Real23">
+    <!-- Top Connection Banner -->
+    <div class="top-connection-banner">
+        <div class="top-connection-title">Account Status</div>
+        <div class="top-connection-main">
+            <span class="top-connection-status">CONNECTED</span>
+            <span class="top-connection-broker" id="brokerLabel">Connected to Exness</span>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">📊 LIVE ANALYSIS</div>
-        <div class="chart-container">
-            <svg class="wave-svg animated-wave" viewBox="0 0 300 70" preserveAspectRatio="none">
-                <path d="M 0,45 Q 40,15 80,35 T 160,25 T 240,40 T 300,20" fill="none" stroke="#ffb703" stroke-width="2.5"></path>
-                <path d="M 0,45 Q 40,15 80,35 T 160,25 T 240,40 T 300,20 L 300,70 L 0,70 Z" fill="rgba(255, 183, 3, 0.12)"></path>
-            </svg>
-        </div>
-        <div class="analysis-item"><span>Detecting market structure</span> <span class="dot" style="animation-delay: 0s;"></span></div>
-        <div class="analysis-item"><span>Calibrating stop loss parameters</span> <span class="dot" style="animation-delay: 0.4s;"></span></div>
-        <div class="analysis-item" style="border:none;"><span>AI execution scoring active</span> <span class="dot" style="animation-delay: 0.8s;"></span></div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <span>🤖 BOT CONTROL</span>
-            <span id="botStateBadge" class="status-badge stopped">STOPPED</span>
-        </div>
-        <div class="btn-container">
-            <button class="btn btn-start" onclick="startBot()">START BOT</button>
-            <button class="btn btn-stop" onclick="stopBot()">STOP BOT</button>
-        </div>
-    </div>
-
-    <script>
-        const BACKEND_URL = "https://mt5-bot-2.onrender.com";
-
-        function saveCreds() {
-            const broker = document.getElementById('brokerInput').value;
-            document.getElementById('brokerDisplay').innerText = `Connected to ${broker}`;
-            alert("MT5 Account credentials saved!");
-        }
-
-        async function startBot() {
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/bot/start`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        broker: document.getElementById('brokerInput').value,
-                        login: document.getElementById('loginInput').value,
-                        server: document.getElementById('serverInput').value
-                    })
-                });
-                const data = await res.json();
-                if(data.success) {
-                    document.getElementById('topBadge').className = "status-badge running";
-                    document.getElementById('topBadge').innerText = "RUNNING";
-                    document.getElementById('botStateBadge').className = "status-badge running";
-                    document.getElementById('botStateBadge').innerText = "RUNNING";
-                }
-            } catch(e) {
-                alert("Error connecting to backend server.");
-            }
-        }
-
-        async function stopBot() {
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/bot/stop`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const data = await res.json();
-                if(data.success) {
-                    document.getElementById('topBadge').className = "status-badge stopped";
-                    document.getElementById('topBadge').innerText = "STOPPED";
-                    document.getElementById('botStateBadge').className = "status-badge stopped";
-                    document.getElementById('botStateBadge').innerText = "STOPPED";
-                }
-            } catch(e) {
-                alert("Error reaching backend server.");
-            }
-        }
-    </script>
-</body>
-            </html>
-            
+    <!-- MT5 Account
+    
