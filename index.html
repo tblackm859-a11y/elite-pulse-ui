@@ -36,18 +36,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
             border-bottom: 1px solid var(--border-color);
         }
 
         h1 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             color: var(--accent-gold);
         }
 
         .connection-banner {
-            background: rgba(46, 196, 182, 0.1);
+            background: rgba(46, 196, 182, 0.08);
             border: 1px solid var(--accent-green);
             padding: 10px 14px;
             border-radius: 10px;
@@ -60,7 +60,7 @@
         .connection-status {
             font-weight: bold;
             color: var(--accent-green);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
         }
 
@@ -77,46 +77,64 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
             color: var(--accent-gold);
             letter-spacing: 0.5px;
         }
 
-        .form-group {
+        .chart-container {
+            position: relative;
+            height: 90px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
             margin-bottom: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 5px;
+        }
+
+        .wave-svg {
+            width: 100%;
+            height: 70px;
+        }
+
+        .form-group {
+            margin-bottom: 8px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
-        input, select {
+        input {
             width: 100%;
-            padding: 8px 10px;
+            padding: 7px 10px;
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .analysis-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             padding: 6px 0;
             border-bottom: 1px solid rgba(255,255,255,0.03);
             color: var(--text-muted);
         }
 
         .dot {
-            height: 8px;
-            width: 8px;
+            height: 7px;
+            width: 7px;
             background-color: var(--accent-green);
             border-radius: 50%;
             display: inline-block;
@@ -127,7 +145,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .btn {
@@ -135,7 +153,7 @@
             border: none;
             border-radius: 8px;
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -145,7 +163,7 @@
         .btn-stop { background-color: var(--accent-red); color: #fff; }
 
         .status-badge {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             padding: 3px 8px;
             border-radius: 12px;
             font-weight: bold;
@@ -161,27 +179,25 @@
         <span id="topBadge" class="status-badge stopped">STOPPED</span>
     </header>
 
-    <!-- Connection Banner matching reference -->
     <div class="connection-banner">
         <div>
-            <div style="font-size: 0.7rem; color: var(--text-muted);">Account Status</div>
-            <div class="connection-status" id="connText">CONNECTED</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted);">Account Status</div>
+            <div class="connection-status">CONNECTED</div>
         </div>
-        <div style="font-size: 0.8rem; color: var(--text-muted);" id="brokerDisplay">Connected to Broker</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);" id="brokerDisplay">Connected to Exness</div>
     </div>
 
-    <!-- MT5 Account Configuration Card -->
     <div class="card">
         <div class="card-header">
-            <span>🎛️ MT5 ACCOUNT CONFIG</span>
-            <span style="font-size: 0.7rem; color: var(--accent-green); cursor: pointer;" onclick="saveCredentials()">Save</span>
+            <span>🎛️ MT5 ACCOUNT</span>
+            <span style="font-size: 0.65rem; color: var(--accent-green); cursor: pointer;" onclick="saveCreds()">Save</span>
         </div>
         <div class="form-group">
-            <label>Broker Name</label>
+            <label>Broker</label>
             <input type="text" id="brokerInput" value="Exness">
         </div>
         <div class="form-group">
-            <label>Login ID</label>
+            <label>Login</label>
             <input type="text" id="loginInput" value="56197382">
         </div>
         <div class="form-group">
@@ -190,15 +206,19 @@
         </div>
     </div>
 
-    <!-- Live Analysis Feed -->
     <div class="card">
-        <div class="card-header">📈 LIVE ANALYSIS</div>
+        <div class="card-header">📊 LIVE ANALYSIS</div>
+        <div class="chart-container">
+            <svg class="wave-svg" viewBox="0 0 300 70" preserveAspectRatio="none">
+                <path d="M 0,50 Q 50,10 100,40 T 200,20 T 300,35" fill="none" stroke="#ffb703" stroke-width="2.5"></path>
+                <path d="M 0,50 Q 50,10 100,40 T 200,20 T 300,35 L 300,70 L 0,70 Z" fill="rgba(255, 183, 3, 0.1)"></path>
+            </svg>
+        </div>
         <div class="analysis-item"><span>Detecting market structure</span> <span class="dot"></span></div>
         <div class="analysis-item"><span>Calibrating stop loss parameters</span> <span class="dot"></span></div>
         <div class="analysis-item" style="border:none;"><span>AI execution scoring active</span> <span class="dot"></span></div>
     </div>
 
-    <!-- Bot Control Panel -->
     <div class="card">
         <div class="card-header">
             <span>🤖 BOT CONTROL</span>
@@ -211,60 +231,55 @@
     </div>
 
     <script>
-        const RENDER_BACKEND_URL = "https://mt5-bot-2.onrender.com";
+        const BACKEND_URL = "https://mt5-bot-2.onrender.com";
 
-        function saveCredentials() {
+        function saveCreds() {
             const broker = document.getElementById('brokerInput').value;
-            const login = document.getElementById('loginInput').value;
-            const server = document.getElementById('serverInput').value;
-            
             document.getElementById('brokerDisplay').innerText = `Connected to ${broker}`;
-            alert("MT5 Credentials saved locally & synced!");
+            alert("MT5 Account credentials saved!");
         }
 
         async function startBot() {
-            const broker = document.getElementById('brokerInput').value;
-            const login = document.getElementById('loginInput').value;
-            const server = document.getElementById('serverInput').value;
-
             try {
-                const response = await fetch(`${RENDER_BACKEND_URL}/api/bot/start`, {
+                const res = await fetch(`${BACKEND_URL}/api/bot/start`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ broker, login, server })
+                    body: JSON.stringify({
+                        broker: document.getElementById('brokerInput').value,
+                        login: document.getElementById('loginInput').value,
+                        server: document.getElementById('serverInput').value
+                    })
                 });
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('topBadgeclassName').className = "status-badge running";
+                const data = await res.json();
+                if(data.success) {
+                    document.getElementById('topBadge').className = "status-badge running";
                     document.getElementById('topBadge').innerText = "RUNNING";
                     document.getElementById('botStateBadge').className = "status-badge running";
                     document.getElementById('botStateBadge').innerText = "RUNNING";
-                    alert("Bot started successfully on your MT5 account!");
                 }
-            } catch (err) {
-                alert("Error connecting to Render backend.");
+            } catch(e) {
+                alert("Error connecting to backend server.");
             }
         }
 
         async function stopBot() {
             try {
-                const response = await fetch(`${RENDER_BACKEND_URL}/api/bot/stop`, {
+                const res = await fetch(`${BACKEND_URL}/api/bot/stop`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
-                const data = await response.json();
-                if (data.success) {
+                const data = await res.json();
+                if(data.success) {
                     document.getElementById('topBadge').className = "status-badge stopped";
                     document.getElementById('topBadge').innerText = "STOPPED";
                     document.getElementById('botStateBadge').className = "status-badge stopped";
                     document.getElementById('botStateBadge').innerText = "STOPPED";
-                    alert("Bot stopped.");
                 }
-            } catch (err) {
-                alert("Error reaching backend.");
+            } catch(e) {
+                alert("Error reaching backend server.");
             }
         }
     </script>
 </body>
-    </html>
-    
+                </html>
+                
