@@ -101,6 +101,18 @@
             height: 70px;
         }
 
+        /* Animation making the chart line pulse/wave dynamically */
+        @keyframes pulseWave {
+            0% { transform: translateY(0px) scaleY(1); }
+            50% { transform: translateY(-3px) scaleY(1.08); }
+            100% { transform: translateY(0px) scaleY(1); }
+        }
+
+        .animated-wave {
+            animation: pulseWave 1.8s ease-in-out infinite;
+            transform-origin: bottom;
+        }
+
         .form-group {
             margin-bottom: 8px;
         }
@@ -132,13 +144,19 @@
             color: var(--text-muted);
         }
 
+        @keyframes blinkDot {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px var(--accent-green); }
+            100% { opacity: 0.3; transform: scale(0.8); }
+        }
+
         .dot {
             height: 7px;
             width: 7px;
             background-color: var(--accent-green);
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 6px var(--accent-green);
+            animation: blinkDot 1.2s ease-in-out infinite;
         }
 
         .btn-container {
@@ -209,14 +227,14 @@
     <div class="card">
         <div class="card-header">📊 LIVE ANALYSIS</div>
         <div class="chart-container">
-            <svg class="wave-svg" viewBox="0 0 300 70" preserveAspectRatio="none">
-                <path d="M 0,50 Q 50,10 100,40 T 200,20 T 300,35" fill="none" stroke="#ffb703" stroke-width="2.5"></path>
-                <path d="M 0,50 Q 50,10 100,40 T 200,20 T 300,35 L 300,70 L 0,70 Z" fill="rgba(255, 183, 3, 0.1)"></path>
+            <svg class="wave-svg animated-wave" viewBox="0 0 300 70" preserveAspectRatio="none">
+                <path d="M 0,45 Q 40,15 80,35 T 160,25 T 240,40 T 300,20" fill="none" stroke="#ffb703" stroke-width="2.5"></path>
+                <path d="M 0,45 Q 40,15 80,35 T 160,25 T 240,40 T 300,20 L 300,70 L 0,70 Z" fill="rgba(255, 183, 3, 0.12)"></path>
             </svg>
         </div>
-        <div class="analysis-item"><span>Detecting market structure</span> <span class="dot"></span></div>
-        <div class="analysis-item"><span>Calibrating stop loss parameters</span> <span class="dot"></span></div>
-        <div class="analysis-item" style="border:none;"><span>AI execution scoring active</span> <span class="dot"></span></div>
+        <div class="analysis-item"><span>Detecting market structure</span> <span class="dot" style="animation-delay: 0s;"></span></div>
+        <div class="analysis-item"><span>Calibrating stop loss parameters</span> <span class="dot" style="animation-delay: 0.4s;"></span></div>
+        <div class="analysis-item" style="border:none;"><span>AI execution scoring active</span> <span class="dot" style="animation-delay: 0.8s;"></span></div>
     </div>
 
     <div class="card">
@@ -281,5 +299,5 @@
         }
     </script>
 </body>
-                </html>
-                
+            </html>
+            
